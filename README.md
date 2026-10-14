@@ -1,6 +1,5 @@
 # Lyd til vibrasjon
-
-En python app laget for å konvertere lyd fra datamaskinen til vibrasjoner på spillkontrolleren. Den fanger opp lyd fra venstre og høyre kanal, så man får en 3D vibrasjon. Laget for personer med redusert hørsel, og personer som vil bruke det for musikk. Den har tre moduser:
+A python app made for converting sound from the computer to vibrations to a game controller. It takes sound from the left and right channel, so the controller gets 3D vibration. Made for persons with reduced hearing, and persons who wants to use it for music. It has three modes.
 
 1. Bass Focus (Focuses on the bass for the vibration) Well suited for games and music.
 2. Full Spectrum (Brings all sound to the vibrations) Well suited for persons with reduced hearing.
