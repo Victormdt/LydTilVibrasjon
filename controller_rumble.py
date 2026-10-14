@@ -34,7 +34,7 @@ def set_rumble(left, right, player_index=0):
 class RumbleApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Lyd til Vibrasjon. Xbox kontroller")
+        self.root.title("Sound To Vibration. Xbox Controller")
         self.root.geometry("340x440")
         self.root.resizable(False, False)
 
@@ -42,39 +42,39 @@ class RumbleApp:
         self.thread = None
 
         # Tittel
-        title_label = ttk.Label(root, text="Lyd til vibrasjon. Xbox kontroller", font=("Arial", 12, "bold"))
+        title_label = ttk.Label(root, text="Sound To Vibration. Xbox Controller", font=("Arial", 12, "bold"))
         title_label.pack(pady=10)
 
         # Modus-valg
         self.modus_var = tk.StringVar(value="1")
 
-        frame_moduser = ttk.LabelFrame(root, text=" Velg Modus ", padding=10)
+        frame_moduser = ttk.LabelFrame(root, text=" Choose a mode ", padding=10)
         frame_moduser.pack(fill="x", padx=15, pady=5)
 
-        ttk.Radiobutton(frame_moduser, text="1. Spesialisert (Bass-fokus)", variable=self.modus_var, value="1").pack(
+        ttk.Radiobutton(frame_moduser, text="1. Bass Focus", variable=self.modus_var, value="1").pack(
             anchor="w", pady=2)
-        ttk.Radiobutton(frame_moduser, text="2. Alt-inkludert (Fullt spektrum)", variable=self.modus_var,
+        ttk.Radiobutton(frame_moduser, text="2. Full Spectrum", variable=self.modus_var,
                         value="2").pack(anchor="w", pady=2)
-        ttk.Radiobutton(frame_moduser, text="3. Rytme-Fokus (Ren taktfølelse)", variable=self.modus_var,
+        ttk.Radiobutton(frame_moduser, text="3. Rythm Focus", variable=self.modus_var,
                         value="3").pack(anchor="w", pady=2)
 
         # Styrke / Volum-glidebryter
-        frame_styrke = ttk.LabelFrame(root, text=" Vibrasjonsstyrke ", padding=10)
+        frame_styrke = ttk.LabelFrame(root, text=" Vibration Strength ", padding=10)
         frame_styrke.pack(fill="x", padx=15, pady=5)
 
         self.strength_slider = ttk.Scale(frame_styrke, from_=0.2, to=2.0, value=1.0, orient="horizontal",
                                          command=self.update_strength_label)
         self.strength_slider.pack(fill="x", pady=2)
 
-        self.strength_label = ttk.Label(frame_styrke, text="Styrke: 1.0x", font=("Arial", 9))
+        self.strength_label = ttk.Label(frame_styrke, text="Strength: 1.0x", font=("Arial", 9))
         self.strength_label.pack(pady=2)
 
         # Statusfelt
-        self.status_label = ttk.Label(root, text="Status: Avstengt", font=("Arial", 10), foreground="gray")
+        self.status_label = ttk.Label(root, text="Status: Closed", font=("Arial", 10), foreground="gray")
         self.status_label.pack(pady=8)
 
         # Start / Stopp-knapper
-        self.btn_start = ttk.Button(root, text="Start Lytter", command=self.start_app)
+        self.btn_start = ttk.Button(root, text="Start Listening", command=self.start_app)
         self.btn_start.pack(fill="x", padx=20, pady=2)
 
         self.btn_stop = ttk.Button(root, text="Stopp", command=self.stop_app, state="disabled")
@@ -82,14 +82,14 @@ class RumbleApp:
 
     def update_strength_label(self, val):
         val_float = float(val)
-        self.strength_label.config(text=f"Styrke: {val_float:.1f}x")
+        self.strength_label.config(text=f"Strength: {val_float:.1f}x")
 
     def start_app(self):
         if not self.running:
             self.running = True
             self.btn_start.config(state="disabled")
             self.btn_stop.config(state="normal")
-            self.status_label.config(text="Status: Kjører...", foreground="green")
+            self.status_label.config(text="Status: Running...", foreground="green")
 
             self.thread = threading.Thread(target=self.audio_loop, daemon=True)
             self.thread.start()
@@ -99,14 +99,14 @@ class RumbleApp:
         set_rumble(0.0, 0.0, 0)
         self.btn_start.config(state="normal")
         self.btn_stop.config(state="disabled")
-        self.status_label.config(text="Status: Avstengt", foreground="gray")
+        self.status_label.config(text="Status: Closed", foreground="gray")
 
     def audio_loop(self):
         try:
             speaker = sc.default_speaker()
             mic = sc.get_microphone(id=speaker.name, include_loopback=True)
         except Exception as e:
-            self.root.after(0, lambda: self.status_label.config(text=f"Feil: Kunne ikke hente lyd", foreground="red"))
+            self.root.after(0, lambda: self.status_label.config(text=f"Error: Can`t find sound source", foreground="red"))
             self.stop_app()
             return
 
